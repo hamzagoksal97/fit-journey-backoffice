@@ -1,0 +1,17 @@
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  @media (max-width: 768px) {
+    .avatar {
+      max-width: 100px; /* Mobilde daha küçük boyut */
+    }
+  }
+  
