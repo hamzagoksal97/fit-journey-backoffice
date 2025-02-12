@@ -1,0 +1,44 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  frontend:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Configure AWS Credentials
+        # AWS IAM Role ARN'yi yeni değeri ile güncelledik
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::253490761932:role/FitJourney-Admin-CICD  # Yeni IAM Role ARN
+          aws-region: eu-central-1  # AWS Region
+
+      # 3. Build Frontend using npm
+      - name: Build Frontend
+        run: |
+          npm install
+          npm run build
+
+      # 4. Deploy to S3
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./build/ s3://fitjourney-prod-admin/ --delete
+
+      # 5. Invalidate CloudFront Cache
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id E1VZ5XOZ632BWG --paths "/*"
