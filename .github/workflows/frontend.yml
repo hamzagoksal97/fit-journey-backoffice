@@ -24,21 +24,21 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::253490761932:role/FitJourney-Admin-CICD  # Yeni IAM Role ARN
-          aws-region: eu-central-1  # AWS Region
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Yeni IAM Role ARN
+          aws-region: ${{ secrets.AWS_REGION }}  # AWS Region
 
       # 3. Build Frontend using npm
       - name: Build Frontend
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run build
 
       # 4. Deploy to S3
       - name: Deploy to S3
         run: |
-          aws s3 sync ./build/ s3://fitjourney-prod-admin/ --delete
+          aws s3 sync ./build/ s3://${{ secrets.S3_BUCKET }}/ --delete
 
       # 5. Invalidate CloudFront Cache
       - name: Invalidate CloudFront Cache
         run: |
-          aws cloudfront create-invalidation --distribution-id E1VZ5XOZ632BWG --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
