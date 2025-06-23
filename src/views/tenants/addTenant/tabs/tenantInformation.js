@@ -106,6 +106,50 @@ const TenantInformation = () => {
                 </Col>
                 <Col xs={24} sm={12} md={8}>
                     <Form.Item
+                        label="Şirket Unvanı"
+                        name="companyTitle"
+                        rules={[
+                            {
+                                type: 'string',
+                                message: 'Şirket Unvanı alanı metin tipinde olmalıdır.',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Şirket Unvanı" />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} sm={12} md={8}>
+                    <Form.Item
+                        label="Vergi Numarası / TC Numarası"
+                        name="taxNumber"
+                        rules={[
+                            {
+                                pattern: /^\d{10,11}$/,
+                                message: 'Vergi Numarası 10 haneli, TC Numarası 11 haneli olmalıdır.',
+                            }
+                        ]}
+                    >
+                        <Input placeholder="1234567890 veya 12345678901" />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <Form.Item
+                        label="Vergi Dairesi"
+                        name="taxOffice"
+                        rules={[
+                            {
+                                type: 'string',
+                                message: 'Vergi Dairesi alanı metin tipinde olmalıdır.',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Vergi Dairesi" />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <Form.Item
                         label="Konum Latitude"
                         name="latitude"
                         rules={[
